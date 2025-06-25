@@ -1,28 +1,6 @@
-FROM python:3.11-slim as builder
-
-# Install uv
-COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
-
-WORKDIR /app
-
-# Install system dependencies for building
-RUN apt-get update \
-    && apt-get install -y --no-install-recommends \
-        build-essential \
-        libpq-dev \
-    && rm -rf /var/lib/apt/lists/*
-
-# Copy uv configuration
-COPY pyproject.toml uv.lock* ./
-
-# Install dependencies with uv
-RUN uv sync --frozen --no-dev
-
 # Production stage
 FROM python:3.11-slim
 
-# Install uv
-COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
 
 # Create non-root user with home directory
 RUN groupadd -r django && useradd -r -g django -m django
@@ -36,9 +14,6 @@ RUN apt-get update \
         curl \
     && rm -rf /var/lib/apt/lists/*
 
-# Copy virtual environment from builder
-COPY --from=builder /app/.venv /app/.venv
-
 # Copy project files
 COPY . .
 
@@ -51,7 +26,8 @@ RUN mkdir -p /app/staticfiles \
 USER django
 
 # Collect static files
-RUN uv run python manage.py collectstatic --noinput
+RUN pip install -r requirements.txt
+RUN python manage.py collectstatic --noinput
 
 # Health check
 HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
@@ -59,4 +35,4 @@ HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
 
 EXPOSE 8000
 
-CMD ["uv", "run", "daphne", "-b", "0.0.0.0", "-p", "8000", "myproject.asgi:application"]
+CMD ["python", "-m", "daphne", "-b", "0.0.0.0", "-p", "8000", "myproject.asgi:application"]
