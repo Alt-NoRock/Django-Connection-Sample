@@ -1,0 +1,323 @@
+{% extends "base.html" %}
+
+{% block title %}ホーム - Django + Nginx サンプル{% endblock %}
+
+{% block content %}
+<style>
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateX(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+</style>
+
+<div class="card">
+    <div class="card-header">
+        <h2>投稿一覧</h2>
+        <a href="/create/" class="btn btn-success">新規投稿</a>
+    </div>
+    <div class="card-body">
+        <div id="posts-container">
+            {% if posts %}
+                {% for post in posts %}
+                    <div class="card post-item" style="margin-bottom: 15px;" data-post-id="{{ post.pk }}">
+                        <div class="card-body">
+                            <h3><a href="/post/{{ post.pk }}/" style="text-decoration: none; color: #2c3e50;">{{ post.title }}</a></h3>
+                            <p style="color: #7f8c8d; margin-bottom: 10px;">{{ post.content|truncatechars:100 }}</p>
+                            <small style="color: #95a5a6;">投稿日時: {{ post.created_at|date:"Y年m月d日 H:i" }}</small>
+                            <div style="margin-top: 10px;">
+                                <form method="post" action="/delete/{{ post.pk }}/" style="display: inline;">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('本当に削除しますか？')">削除</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p id="no-posts-message" style="text-align: center; color: #7f8c8d; padding: 40px;">投稿がありません。<a href="/create/">新しい投稿を作成</a>してください。</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header">
+        <h3>リアルタイム接続状況</h3>
+    </div>
+    <div class="card-body">
+        <p>WebSocket接続状況: <span id="connection-status" style="font-weight: bold;">接続中...</span></p>
+        <div id="connection-indicator" style="width: 10px; height: 10px; border-radius: 50%; background-color: #ffc107; display: inline-block;"></div>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header">
+        <h3>ランダムメッセージ</h3>
+        <button id="clear-messages" class="btn btn-secondary btn-sm">メッセージをクリア</button>
+    </div>
+    <div class="card-body">
+        <div id="random-messages" style="max-height: 300px; overflow-y: auto; border: 1px solid #ddd; padding: 10px; background-color: #f8f9fa;">
+            <p style="color: #6c757d; text-align: center;">ランダムメッセージを待機中...</p>
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header">
+        <h3>APIエンドポイント</h3>
+    </div>
+    <div class="card-body">
+        <p>このアプリケーションは以下のAPIエンドポイントを提供しています：</p>
+        <ul>
+            <li><a href="/api/posts/" target="_blank">/api/posts/</a> - 投稿一覧をJSON形式で取得</li>
+            <li><a href="/health/" target="_blank">/health/</a> - ヘルスチェック</li>
+            <li><strong>WebSocket:</strong> ws://localhost:8000/ws/posts/ - リアルタイム投稿更新</li>
+        </ul>
+    </div>
+</div>
+
+<script>
+// WebSocket接続の設定
+const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+const wsURL = `${protocol}//${window.location.host}/ws/posts/`;
+let socket;
+let reconnectAttempts = 0;
+const maxReconnectAttempts = 5;
+
+function connectWebSocket() {
+    socket = new WebSocket(wsURL);
+    
+    socket.onopen = function(e) {
+        console.log('WebSocket接続が確立されました');
+        updateConnectionStatus('接続済み', '#28a745');
+        reconnectAttempts = 0;
+    };
+    
+    socket.onmessage = function(event) {
+        const data = JSON.parse(event.data);
+        console.log('メッセージを受信:', data);
+        
+        switch(data.type) {
+            case 'posts_list':
+                updatePostsList(data.posts);
+                break;
+            case 'post_created':
+                addNewPost(data.post);
+                break;
+            case 'post_updated':
+                updatePost(data.post);
+                break;
+            case 'post_deleted':
+                removePost(data.post_id);
+                break;
+            case 'random_message':
+                addRandomMessage(data.message);
+                break;
+        }
+    };
+    
+    socket.onclose = function(event) {
+        console.log('WebSocket接続が閉じられました');
+        updateConnectionStatus('切断済み', '#dc3545');
+        
+        // 自動再接続
+        if (reconnectAttempts < maxReconnectAttempts) {
+            reconnectAttempts++;
+            setTimeout(connectWebSocket, 2000 * reconnectAttempts);
+        }
+    };
+    
+    socket.onerror = function(error) {
+        console.error('WebSocketエラー:', error);
+        updateConnectionStatus('エラー', '#dc3545');
+    };
+}
+
+function updateConnectionStatus(status, color) {
+    const statusElement = document.getElementById('connection-status');
+    const indicatorElement = document.getElementById('connection-indicator');
+    
+    statusElement.textContent = status;
+    statusElement.style.color = color;
+    indicatorElement.style.backgroundColor = color;
+}
+
+function updatePostsList(posts) {
+    const container = document.getElementById('posts-container');
+    const noPostsMessage = document.getElementById('no-posts-message');
+    
+    if (posts.length === 0) {
+        container.innerHTML = '<p id="no-posts-message" style="text-align: center; color: #7f8c8d; padding: 40px;">投稿がありません。<a href="/create/">新しい投稿を作成</a>してください。</p>';
+        return;
+    }
+    
+    if (noPostsMessage) {
+        noPostsMessage.remove();
+    }
+    
+    container.innerHTML = '';
+    posts.forEach(post => {
+        addPostToDOM(post);
+    });
+}
+
+function addNewPost(post) {
+    const container = document.getElementById('posts-container');
+    const noPostsMessage = document.getElementById('no-posts-message');
+    
+    if (noPostsMessage) {
+        noPostsMessage.remove();
+    }
+    
+    const postElement = createPostElement(post);
+    container.insertBefore(postElement, container.firstChild);
+    
+    // 新しい投稿をハイライト
+    postElement.style.backgroundColor = '#d4edda';
+    setTimeout(() => {
+        postElement.style.backgroundColor = '';
+    }, 3000);
+}
+
+function removePost(postId) {
+    const postElement = document.querySelector(`[data-post-id="${postId}"]`);
+    if (postElement) {
+        postElement.style.transition = 'opacity 0.5s';
+        postElement.style.opacity = '0';
+        setTimeout(() => {
+            postElement.remove();
+            
+            // 投稿がなくなった場合のメッセージ表示
+            const container = document.getElementById('posts-container');
+            if (container.children.length === 0) {
+                container.innerHTML = '<p id="no-posts-message" style="text-align: center; color: #7f8c8d; padding: 40px;">投稿がありません。<a href="/create/">新しい投稿を作成</a>してください。</p>';
+            }
+        }, 500);
+    }
+}
+
+function createPostElement(post) {
+    const postDiv = document.createElement('div');
+    postDiv.className = 'card post-item';
+    postDiv.style.marginBottom = '15px';
+    postDiv.setAttribute('data-post-id', post.id);
+    
+    const createdAt = new Date(post.created_at);
+    const formattedDate = createdAt.toLocaleDateString('ja-JP', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+    });
+    
+    postDiv.innerHTML = `
+        <div class="card-body">
+            <h3><a href="/post/${post.id}/" style="text-decoration: none; color: #2c3e50;">${post.title}</a></h3>
+            <p style="color: #7f8c8d; margin-bottom: 10px;">${post.content.length > 100 ? post.content.substring(0, 100) + '...' : post.content}</p>
+            <small style="color: #95a5a6;">投稿日時: ${formattedDate}</small>
+            <div style="margin-top: 10px;">
+                <form method="post" action="/delete/${post.id}/" style="display: inline;">
+                    <input type="hidden" name="csrfmiddlewaretoken" value="${getCookie('csrftoken')}">
+                    <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('本当に削除しますか？')">削除</button>
+                </form>
+            </div>
+        </div>
+    `;
+    
+    return postDiv;
+}
+
+function addPostToDOM(post) {
+    const container = document.getElementById('posts-container');
+    const postElement = createPostElement(post);
+    container.appendChild(postElement);
+}
+
+function addRandomMessage(message) {
+    const container = document.getElementById('random-messages');
+    
+    // 初回メッセージの場合、待機中テキストを削除
+    const waitingMessage = container.querySelector('p');
+    if (waitingMessage && waitingMessage.textContent.includes('ランダムメッセージを待機中')) {
+        waitingMessage.remove();
+    }
+    
+    // メッセージ要素を作成
+    const messageElement = document.createElement('div');
+    messageElement.style.cssText = `
+        margin-bottom: 10px;
+        padding: 8px 12px;
+        border-radius: 5px;
+        border-left: 4px solid ${message.color || '#007bff'};
+        background-color: #ffffff;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        animation: slideIn 0.3s ease-out;
+    `;
+    
+    const timestamp = new Date(message.timestamp);
+    const formattedTime = timestamp.toLocaleTimeString('ja-JP');
+    
+    messageElement.innerHTML = `
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">
+            <span style="font-weight: bold; color: ${message.color || '#007bff'};">${message.message_type}</span>
+            <small style="color: #6c757d;">${formattedTime}</small>
+        </div>
+        <div style="font-family: monospace; color: #333; word-break: break-all;">
+            ${message.content}
+        </div>
+    `;
+    
+    // 新しいメッセージを先頭に追加
+    container.insertBefore(messageElement, container.firstChild);
+    
+    // メッセージ数を制限（最大20件）
+    const messages = container.children;
+    if (messages.length > 20) {
+        for (let i = messages.length - 1; i >= 20; i--) {
+            messages[i].remove();
+        }
+    }
+    
+    // スクロールを一番上に
+    container.scrollTop = 0;
+}
+
+function clearRandomMessages() {
+    const container = document.getElementById('random-messages');
+    container.innerHTML = '<p style="color: #6c757d; text-align: center;">ランダムメッセージを待機中...</p>';
+}
+
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+
+// ページ読み込み時にWebSocket接続を開始
+document.addEventListener('DOMContentLoaded', function() {
+    connectWebSocket();
+    
+    // クリアボタンのイベントリスナーを追加
+    const clearButton = document.getElementById('clear-messages');
+    if (clearButton) {
+        clearButton.addEventListener('click', clearRandomMessages);
+    }
+});
+</script>
+{% endblock %}

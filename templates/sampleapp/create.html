@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block title %}新規投稿 - Django + Nginx サンプル{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header">
+        <h2>新規投稿</h2>
+    </div>
+    <div class="card-body">
+        <form method="post" style="max-width: 600px;">
+            {% csrf_token %}
+            <div style="margin-bottom: 20px;">
+                <label for="title" style="display: block; margin-bottom: 8px; font-weight: bold;">タイトル:</label>
+                <input type="text" id="title" name="title" required 
+                       style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px; font-size: 16px;">
+            </div>
+            
+            <div style="margin-bottom: 20px;">
+                <label for="content" style="display: block; margin-bottom: 8px; font-weight: bold;">内容:</label>
+                <textarea id="content" name="content" rows="10" required
+                          style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px; font-size: 16px; resize: vertical;"></textarea>
+            </div>
+            
+            <div style="text-align: center;">
+                <button type="submit" class="btn btn-success">投稿する</button>
+                <a href="/" class="btn">キャンセル</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header">
+        <h3>使い方</h3>
+    </div>
+    <div class="card-body">
+        <p>タイトルと内容を入力して「投稿する」ボタンをクリックしてください。</p>
+        <ul>
+            <li>タイトルは200文字以内で入力してください</li>
+            <li>内容は自由な長さで入力できます</li>
+            <li>投稿後は自動的に詳細ページに移動します</li>
+        </ul>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block title %}{{ post.title }} - Django + Nginx サンプル{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header">
+        <h2>{{ post.title }}</h2>
+        <small style="color: #95a5a6;">投稿日時: {{ post.created_at|date:"Y年m月d日 H:i" }}</small>
+    </div>
+    <div class="card-body">
+        <div style="white-space: pre-wrap; line-height: 1.8;">{{ post.content }}</div>
+        
+        <hr style="margin: 30px 0;">
+        
+        <div style="text-align: center;">
+            <a href="/" class="btn">一覧に戻る</a>
+            <a href="/create/" class="btn btn-success">新規投稿</a>
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header">
+        <h3>投稿情報</h3>
+    </div>
+    <div class="card-body">
+        <p><strong>ID:</strong> {{ post.pk }}</p>
+        <p><strong>作成日時:</strong> {{ post.created_at|date:"Y年m月d日 H:i:s" }}</p>
+        <p><strong>更新日時:</strong> {{ post.updated_at|date:"Y年m月d日 H:i:s" }}</p>
+    </div>
+</div>
+{% endblock %}

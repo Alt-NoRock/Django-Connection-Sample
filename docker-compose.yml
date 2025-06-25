@@ -1,0 +1,95 @@
+# Django + Nginx Docker Compose setup
+# Using Docker Compose V2 specification with SELinux support
+
+services:
+  db:
+    image: postgres:15-alpine
+    env_file: .env
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U django_user -d django_sample"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    restart: unless-stopped
+
+  redis:
+    image: redis:7-alpine  # SSPL - 商用利用要チェック
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    restart: unless-stopped
+
+  web:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    command: >
+      sh -c "uv run python manage.py collectstatic --noinput &&
+             uv run daphne -b 0.0.0.0 -p 8000 myproject.asgi:application"
+    volumes:
+      # SELinux対応: :Z フラグで適切なコンテキストを設定
+      - static_volume:/app/staticfiles:Z
+    expose:
+      - "8000"
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    env_file: .env
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    restart: unless-stopped
+
+  # 静的ファイル初期化用の一時コンテナ
+  staticfiles:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    command: uv run python manage.py collectstatic --noinput --verbosity 2
+    volumes:
+      - static_volume:/app/staticfiles:Z
+    depends_on:
+      db:
+        condition: service_healthy
+    env_file: .env
+    profiles:
+      - setup
+
+  nginx:
+    image: nginx:alpine
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+      # SELinux対応: :Z フラグと読み取り専用
+      - static_volume:/app/staticfiles:ro,Z
+    depends_on:
+      web:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
+  redis_data:
+  static_volume:
