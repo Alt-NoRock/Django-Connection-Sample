@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<graphml xmlns="http://graphml.graphdrawing.org/xmlns"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://graphml.graphdrawing.org/xmlns
+         http://graphml.graphdrawing.org/xmlns/1.0/graphml.xsd">
+  
+  <!-- ノード属性の定義 -->
+  <key id="label" for="node" attr.name="label" attr.type="string"/>
+  <key id="type" for="node" attr.name="type" attr.type="string"/>
+  <key id="description" for="node" attr.name="description" attr.type="string"/>
+  
+  <!-- エッジ属性の定義 -->
+  <key id="label" for="edge" attr.name="label" attr.type="string"/>
+  <key id="weight" for="edge" attr.name="weight" attr.type="double"/>
+  
+  <!-- グラフ定義 -->
+  <graph id="G" edgedefault="directed">
+    
+    <!-- ノード定義 -->
+    <node id="WIFI">
+      <data key="label">WIFI Interface</data>
+      <data key="type">Interface</data>
+      <data key="description">無線LAN接続インターフェース</data>
+    </node>
+    
+    <node id="JTAG">
+      <data key="label">JTAG Port</data>
+      <data key="type">Interface</data>
+      <data key="description">デバッグ用JTAGポート</data>
+    </node>
+    
+    <node id="CPU">
+      <data key="label">Main CPU</data>
+      <data key="type">Device</data>
+      <data key="description">メインプロセッサ</data>
+    </node>
+    
+    <node id="HDD">
+      <data key="label">Storage HDD</data>
+      <data key="type">Device</data>
+      <data key="description">ストレージデバイス</data>
+    </node>
+    
+    <node id="MEMORY">
+      <data key="label">System Memory</data>
+      <data key="type">Device</data>
+      <data key="description">システムメモリ</data>
+    </node>
+    
+    <node id="ETHERNET">
+      <data key="label">Ethernet Port</data>
+      <data key="type">Interface</data>
+      <data key="description">有線LAN接続ポート</data>
+    </node>
+    
+    <!-- エッジ定義 -->
+    <edge id="e1" source="WIFI" target="CPU">
+      <data key="label">無線通信</data>
+      <data key="weight">1.0</data>
+    </edge>
+    
+    <edge id="e2" source="JTAG" target="CPU">
+      <data key="label">デバッグ接続</data>
+      <data key="weight">0.5</data>
+    </edge>
+    
+    <edge id="e3" source="CPU" target="HDD">
+      <data key="label">データ読み書き</data>
+      <data key="weight">2.0</data>
+    </edge>
+    
+    <edge id="e4" source="CPU" target="MEMORY">
+      <data key="label">メモリアクセス</data>
+      <data key="weight">3.0</data>
+    </edge>
+    
+    <edge id="e5" source="ETHERNET" target="CPU">
+      <data key="label">有線通信</data>
+      <data key="weight">1.5</data>
+    </edge>
+    
+    <edge id="e6" source="HDD" target="MEMORY">
+      <data key="label">キャッシュ転送</data>
+      <data key="weight">1.2</data>
+    </edge>
+    
+  </graph>
+</graphml>

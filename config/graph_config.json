@@ -1,0 +1,119 @@
+{
+  "graph": {
+    "nodes": [
+      {
+        "id": "WIFI",
+        "label": "WIFI",
+        "type": "Interface",
+        "icon": {
+          "svg_base64": "PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTEyIDlDMTMuNjU2IDkgMTUgMTAuMzQ0IDE1IDEyUzEzLjY1NiAxNSAxMiAxNVM5IDEzLjY1NiA5IDEyUzEwLjM0NCA5IDEyIDlaIiBmaWxsPSJ3aGl0ZSIvPgo8cGF0aCBkPSJNMTIgMkMxNy41MjMgMiAyMiA2LjQ3NyAyMiAxMlMxNy41MjMgMjIgMTIgMjJTMiAxNy41MjMgMiAxMlM2LjQ3NyAyIDEyIDJaTTEyIDRDNy41ODEgNCA0IDcuNTgxIDQgMTJTNy41ODEgMjAgMTIgMjBTMjAgMTYuNDE5IDIwIDEyUzE2LjQxOSA0IDEyIDRaIiBmaWxsPSJ3aGl0ZSIvPgo8L3N2Zz4K",
+          "opacity": 0.7
+        },
+        "style": {
+          "background_color": "#4CAF50",
+          "width": 80,
+          "height": 80
+        }
+      },
+      {
+        "id": "JTAG",
+        "label": "JTAG",
+        "type": "Interface",
+        "icon": {
+          "svg_base64": "PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3QgeD0iNiIgeT0iNiIgd2lkdGg9IjMiIGhlaWdodD0iMTIiIGZpbGw9IndoaXRlIi8+CjxyZWN0IHg9IjEwIiB5PSI2IiB3aWR0aD0iMyIgaGVpZ2h0PSIxMiIgZmlsbD0id2hpdGUiLz4KPHJlY3QgeD0iMTQiIHk9IjYiIHdpZHRoPSIzIiBoZWlnaHQ9IjEyIiBmaWxsPSJ3aGl0ZSIvPgo8L3N2Zz4K",
+          "opacity": 0.7
+        },
+        "style": {
+          "background_color": "#4CAF50",
+          "width": 80,
+          "height": 80
+        }
+      },
+      {
+        "id": "CPU",
+        "label": "CPU",
+        "type": "Device",
+        "icon": {
+          "svg_base64": "PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3QgeD0iNCIgeT0iNCIgd2lkdGg9IjE2IiBoZWlnaHQ9IjE2IiByeD0iMiIgZmlsbD0id2hpdGUiLz4KPHJlY3QgeD0iOCIgeT0iOCIgd2lkdGg9IjgiIGhlaWdodD0iOCIgZmlsbD0iIzMzMzMzMyIvPgo8L3N2Zz4K",
+          "opacity": 0.7
+        },
+        "style": {
+          "background_color": "#FF9800",
+          "width": 80,
+          "height": 80
+        }
+      },
+      {
+        "id": "HDD",
+        "label": "HDD",
+        "type": "Device",
+        "icon": {
+          "svg_base64": "PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3QgeD0iMyIgeT0iNiIgd2lkdGg9IjE4IiBoZWlnaHQ9IjEyIiByeD0iMiIgZmlsbD0id2hpdGUiLz4KPHJlY3QgeD0iNiIgeT0iMTAiIHdpZHRoPSI2IiBoZWlnaHQ9IjQiIGZpbGw9IiMzMzMzMzMiLz4KPGNpcmNsZSBjeD0iMTgiIGN5PSIxMiIgcj0iMiIgZmlsbD0iIzMzMzMzMyIvPgo8L3N2Zz4K",
+          "opacity": 0.7
+        },
+        "style": {
+          "background_color": "#FF9800",
+          "width": 80,
+          "height": 80
+        }
+      }
+    ],
+    "edges": [
+      {
+        "source": "WIFI",
+        "target": "CPU",
+        "label": "通信",
+        "style": {
+          "line_color": "#7FDBFF",
+          "arrow_color": "#7FDBFF"
+        }
+      },
+      {
+        "source": "JTAG",
+        "target": "HDD",
+        "label": "制御",
+        "style": {
+          "line_color": "#7FDBFF",
+          "arrow_color": "#7FDBFF"
+        }
+      }
+    ]
+  },
+  "table": {
+    "columns": [
+      {
+        "name": "送信元ノード",
+        "id": "source"
+      },
+      {
+        "name": "送信先ノード",
+        "id": "target"
+      },
+      {
+        "name": "経路（エッジ名）",
+        "id": "edge"
+      }
+    ],
+    "style": {
+      "cell": {
+        "textAlign": "center"
+      },
+      "header": {
+        "fontWeight": "bold"
+      }
+    }
+  },
+  "layout": {
+    "graph_size": {
+      "width": "600px",
+      "height": "500px"
+    },
+    "layout_algorithm": "cose",
+    "default_node_style": {
+      "background_color": "#e0e0e0",
+      "width": 60,
+      "height": 60,
+      "shape": "ellipse"
+    }
+  }
+}

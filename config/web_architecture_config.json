@@ -1,0 +1,129 @@
+{
+  "graph": {
+    "nodes": [
+      {
+        "id": "WEB_SERVER",
+        "label": "Web Server",
+        "type": "Server",
+        "icon": {
+          "svg_base64": "PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3QgeD0iMiIgeT0iNCIgd2lkdGg9IjIwIiBoZWlnaHQ9IjE2IiByeD0iMiIgZmlsbD0id2hpdGUiLz4KPGxpbmUgeDE9IjIiIHkxPSI5IiB4Mj0iMjIiIHkyPSI5IiBzdHJva2U9IiMzMzMzMzMiLz4KPGNpcmNsZSBjeD0iNiIgY3k9IjciIHI9IjEiIGZpbGw9IiMzMzMzMzMiLz4KPGNpcmNsZSBjeD0iOSIgY3k9IjciIHI9IjEiIGZpbGw9IiMzMzMzMzMiLz4KPGNpcmNsZSBjeD0iMTIiIGN5PSI3IiByPSIxIiBmaWxsPSIjMzMzMzMzIi8+Cjwvc3ZnPgo=",
+          "opacity": 0.8
+        },
+        "style": {
+          "background_color": "#2196F3",
+          "width": 90,
+          "height": 90
+        }
+      },
+      {
+        "id": "DATABASE",
+        "label": "Database",
+        "type": "Storage",
+        "icon": {
+          "svg_base64": "PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGVsbGlwc2UgY3g9IjEyIiBjeT0iNSIgcng9IjkiIHJ5PSIzIiBmaWxsPSJ3aGl0ZSIvPgo8cGF0aCBkPSJNMyA1VjE5QzMgMjAuNjU3IDcuMDMgMjIgMTIgMjJTMjEgMjAuNjU3IDIxIDE5VjVNMyA1QzMgNi42NTcgNy4wMyA4IDEyIDhTMjEgNi42NTcgMjEgNSIgc3Ryb2tlPSIjMzMzMzMzIiBzdHJva2Utd2lkdGg9IjIiLz4KPHBhdGggZD0iTTMgMTJDMyAxMy42NTcgNy4wMyAxNSAxMiAxNVMyMSAxMy42NTcgMjEgMTIiIHN0cm9rZT0iIzMzMzMzMyIgc3Ryb2tlLXdpZHRoPSIyIi8+Cjwvc3ZnPgo=",
+          "opacity": 0.8
+        },
+        "style": {
+          "background_color": "#9C27B0",
+          "width": 90,
+          "height": 90
+        }
+      },
+      {
+        "id": "CLIENT",
+        "label": "Client",
+        "type": "Client",
+        "icon": {
+          "svg_base64": "PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3QgeD0iMiIgeT0iMyIgd2lkdGg9IjIwIiBoZWlnaHQ9IjE0IiByeD0iMiIgZmlsbD0id2hpdGUiLz4KPHJlY3QgeD0iOCIgeT0iMjEiIHdpZHRoPSI4IiBoZWlnaHQ9IjEiIGZpbGw9IiMzMzMzMzMiLz4KPHJlY3QgeD0iNSIgeT0iMTkiIHdpZHRoPSIxNCIgaGVpZ2h0PSIyIiBmaWxsPSIjMzMzMzMzIi8+Cjwvc3ZnPgo=",
+          "opacity": 0.8
+        },
+        "style": {
+          "background_color": "#4CAF50",
+          "width": 90,
+          "height": 90
+        }
+      },
+      {
+        "id": "API_GATEWAY",
+        "label": "API Gateway",
+        "type": "Gateway",
+        "icon": {
+          "svg_base64": "PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTEyIDJMMTMuMDkgOC4yNkwyMCA5TDEzLjA5IDE1Ljc0TDEyIDIyTDEwLjkxIDE1Ljc0TDQgOUwxMC45MSA4LjI2TDEyIDJaIiBmaWxsPSJ3aGl0ZSIvPgo8L3N2Zz4K",
+          "opacity": 0.8
+        },
+        "style": {
+          "background_color": "#FF5722",
+          "width": 90,
+          "height": 90
+        }
+      }
+    ],
+    "edges": [
+      {
+        "source": "CLIENT",
+        "target": "API_GATEWAY",
+        "label": "HTTP Request",
+        "style": {
+          "line_color": "#4CAF50",
+          "arrow_color": "#4CAF50"
+        }
+      },
+      {
+        "source": "API_GATEWAY",
+        "target": "WEB_SERVER",
+        "label": "Route",
+        "style": {
+          "line_color": "#2196F3",
+          "arrow_color": "#2196F3"
+        }
+      },
+      {
+        "source": "WEB_SERVER",
+        "target": "DATABASE",
+        "label": "Query",
+        "style": {
+          "line_color": "#9C27B0",
+          "arrow_color": "#9C27B0"
+        }
+      }
+    ]
+  },
+  "table": {
+    "columns": [
+      {
+        "name": "送信元",
+        "id": "source"
+      },
+      {
+        "name": "送信先",
+        "id": "target"
+      },
+      {
+        "name": "通信内容",
+        "id": "edge"
+      }
+    ],
+    "style": {
+      "cell": {
+        "textAlign": "center"
+      },
+      "header": {
+        "fontWeight": "bold",
+        "backgroundColor": "#f0f0f0"
+      }
+    }
+  },
+  "layout": {
+    "graph_size": {
+      "width": "700px",
+      "height": "600px"
+    },
+    "layout_algorithm": "breadthfirst",
+    "default_node_style": {
+      "background_color": "#e0e0e0",
+      "width": 70,
+      "height": 70,
+      "shape": "ellipse"
+    }
+  }
+}

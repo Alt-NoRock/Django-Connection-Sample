@@ -1,0 +1,7 @@
+source,target,edge,type,description,bandwidth,protocol
+WIFI,CPU,無線通信,Interface-Device,WiFi経由でのCPUへの通信,100Mbps,IEEE 802.11
+JTAG,CPU,デバッグ接続,Interface-Device,開発・デバッグ用の接続,10Mbps,JTAG
+CPU,HDD,データ読み書き,Device-Device,ストレージへのデータアクセス,6Gbps,SATA
+CPU,MEMORY,メモリアクセス,Device-Device,システムメモリへのアクセス,25.6GBps,DDR4
+ETHERNET,CPU,有線通信,Interface-Device,Ethernet経由でのCPUへの通信,1Gbps,Ethernet
+HDD,MEMORY,キャッシュ転送,Device-Device,HDDからメモリへのキャッシュ転送,6Gbps,Direct

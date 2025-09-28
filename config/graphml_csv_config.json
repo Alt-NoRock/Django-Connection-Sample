@@ -1,0 +1,77 @@
+{
+  "data_sources": {
+    "graphml_file": "data/sample_graph.graphml",
+    "csv_file": "data/sample_table.csv"
+  },
+  "node_type_styles": {
+    "Interface": {
+      "background_color": "#4CAF50",
+      "width": 80,
+      "height": 80,
+      "shape": "ellipse",
+      "icon": {
+        "svg_base64": "PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTEyIDlDMTMuNjU2IDkgMTUgMTAuMzQ0IDE1IDEyUzEzLjY1NiAxNSAxMiAxNVM5IDEzLjY1NiA5IDEyUzEwLjM0NCA5IDEyIDlaIiBmaWxsPSJ3aGl0ZSIvPgo8cGF0aCBkPSJNMTIgMkMxNy41MjMgMiAyMiA2LjQ3NyAyMiAxMlMxNy41MjMgMjIgMTIgMjJTMiAxNy41MjMgMiAxMlM2LjQ3NyAyIDEyIDJaTTEyIDRDNy41ODEgNCA0IDcuNTgxIDQgMTJTNy41ODEgMjAgMTIgMjBTMjAgMTYuNDE5IDIwIDEyUzE2LjQxOSA0IDEyIDRaIiBmaWxsPSJ3aGl0ZSIvPgo8L3N2Zz4K",
+        "opacity": 0.7
+      }
+    },
+    "Device": {
+      "background_color": "#FF9800",
+      "width": 80,
+      "height": 80,
+      "shape": "ellipse",
+      "icon": {
+        "svg_base64": "PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3QgeD0iNCIgeT0iNCIgd2lkdGg9IjE2IiBoZWlnaHQ9IjE2IiByeD0iMiIgZmlsbD0id2hpdGUiLz4KPHJlY3QgeD0iOCIgeT0iOCIgd2lkdGg9IjgiIGhlaWdodD0iOCIgZmlsbD0iIzMzMzMzMyIvPgo8L3N2Zz4K",
+        "opacity": 0.7
+      }
+    },
+    "Server": {
+      "background_color": "#2196F3",
+      "width": 90,
+      "height": 90,
+      "shape": "rectangle",
+      "icon": {
+        "svg_base64": "PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3QgeD0iMiIgeT0iNCIgd2lkdGg9IjIwIiBoZWlnaHQ9IjE2IiByeD0iMiIgZmlsbD0id2hpdGUiLz4KPGxpbmUgeDE9IjIiIHkxPSI5IiB4Mj0iMjIiIHkyPSI5IiBzdHJva2U9IiMzMzMzMzMiLz4KPGNpcmNsZSBjeD0iNiIgY3k9IjciIHI9IjEiIGZpbGw9IiMzMzMzMzMiLz4KPGNpcmNsZSBjeD0iOSIgY3k9IjciIHI9IjEiIGZpbGw9IiMzMzMzMzMiLz4KPGNpcmNsZSBjeD0iMTIiIGN5PSI3IiByPSIxIiBmaWxsPSIjMzMzMzMzIi8+Cjwvc3ZnPgo=",
+        "opacity": 0.8
+      }
+    },
+    "default": {
+      "background_color": "#e0e0e0",
+      "width": 60,
+      "height": 60,
+      "shape": "ellipse"
+    }
+  },
+  "table": {
+    "column_mapping": {
+      "source": "送信元",
+      "target": "送信先",
+      "edge": "接続",
+      "type": "種別",
+      "description": "説明"
+    },
+    "filter_columns": ["source", "target"],
+    "style": {
+      "cell": {
+        "textAlign": "center",
+        "padding": "10px"
+      },
+      "header": {
+        "fontWeight": "bold",
+        "backgroundColor": "#f0f0f0"
+      }
+    }
+  },
+  "layout": {
+    "graph_size": {
+      "width": "700px",
+      "height": "600px"
+    },
+    "layout_algorithm": "cose",
+    "default_node_style": {
+      "background_color": "#e0e0e0",
+      "width": 60,
+      "height": 60,
+      "shape": "ellipse"
+    }
+  }
+}
