@@ -14,13 +14,23 @@
         "opacity": 0.7
       }
     },
-    "Device": {
+    "Processer": {
       "background_color": "#FF9800",
-      "width": 80,
-      "height": 80,
-      "shape": "ellipse",
+      "width": 90,
+      "height": 90,
+      "shape": "rectangle",
       "icon": {
         "svg_base64": "PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3QgeD0iNCIgeT0iNCIgd2lkdGg9IjE2IiBoZWlnaHQ9IjE2IiByeD0iMiIgZmlsbD0id2hpdGUiLz4KPHJlY3QgeD0iOCIgeT0iOCIgd2lkdGg9IjgiIGhlaWdodD0iOCIgZmlsbD0iIzMzMzMzMyIvPgo8L3N2Zz4K",
+        "opacity": 0.8
+      }
+    },
+    "Storage": {
+      "background_color": "#9C27B0",
+      "width": 85,
+      "height": 85,
+      "shape": "ellipse",
+      "icon": {
+        "svg_base64": "PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3QgeD0iMyIgeT0iNiIgd2lkdGg9IjE4IiBoZWlnaHQ9IjEyIiByeD0iMiIgZmlsbD0id2hpdGUiLz4KPHJlY3QgeD0iNiIgeT0iMTAiIHdpZHRoPSI2IiBoZWlnaHQ9IjQiIGZpbGw9IiMzMzMzMzMiLz4KPGNpcmNsZSBjeD0iMTgiIGN5PSIxMiIgcj0iMiIgZmlsbD0iIzMzMzMzMyIvPgo8L3N2Zz4K",
         "opacity": 0.7
       }
     },

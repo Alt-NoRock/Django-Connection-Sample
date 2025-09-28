@@ -31,19 +31,19 @@
     
     <node id="CPU">
       <data key="label">Main CPU</data>
-      <data key="type">Device</data>
+      <data key="type">Processer</data>
       <data key="description">メインプロセッサ</data>
     </node>
     
     <node id="HDD">
       <data key="label">Storage HDD</data>
-      <data key="type">Device</data>
+      <data key="type">Storage</data>
       <data key="description">ストレージデバイス</data>
     </node>
     
     <node id="MEMORY">
       <data key="label">System Memory</data>
-      <data key="type">Device</data>
+      <data key="type">Storage</data>
       <data key="description">システムメモリ</data>
     </node>
     
